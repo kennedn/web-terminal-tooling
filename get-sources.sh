@@ -60,6 +60,12 @@ echo "$(grep helm-linux-amd64$ sha256sum.txt | cut -d' ' -f1) helm-linux-amd64" 
 mv helm-linux-amd64 "$CONTAINER_USR_BIN_DIR/helm"
 rm -rf "${TMPDIR:?}"/*
 
+echo "Downloading yq ${YQ_VER}"
+curl -sSfL --insecure --remote-name-all \
+  https://github.com/mikefarah/yq/releases/download/v${YQ_VER}/yq_linux_amd64
+mv yq_linux_amd64 "$CONTAINER_USR_BIN_DIR/yq"
+rm -rf "${TMPDIR:?}"/*
+
 echo "Downloading odo ${ODO_VER}"
 curl -sSfL --insecure --remote-name-all \
   ${OPENSHIFT_CLIENTS_URL}/odo/${ODO_VER}/sha256sum.txt \
@@ -117,6 +123,7 @@ rm -f rh-manifest.txt || true
   echo "knative ${KN_VER} ${OPENSHIFT_CLIENTS_URL}/serverless/${KN_VER}"
   echo "rhoas ${RHOAS_VERSION} https://github.com/redhat-developer/app-services-cli/tree/${RHOAS_VERSION}"
   echo "submariner ${SUBMARINER_VERSION} https://github.com/submariner-io/submariner-operator/tree/v${SUBMARINER_VERSION}"
+  echo "yq ${YQ_VER} https://github.com/mikefarah/yq/tree/v${YQ_VER}"
 } >> rh-manifest.txt
 
 rm -rf "$CONTAINER_ROOT_DIR"
